@@ -1,0 +1,285 @@
+{
+  "app": "mochi",
+  "fixture": "minimal",
+  "locale": "en-US",
+  "timezone": "UTC",
+  "provenance_note": "This repository installed from its own folder into the throwaway home of a Kiro Crew checkout whose built-in Mochi was removed, as a release that no longer ships it would be. The pictures show the app's dashboard page; the desktop pet and its windows are drawn by the Kiro Crew desktop app, which was not running.",
+  "data_notes": [
+    "The watch items, the counters behind the memories and the quiet hour were added through the app's own API; Mochi's background agent did not run, so no plan was written."
+  ],
+  "init_storage": {
+    "mc-nav": "0"
+  },
+  "ready": "text=Trail map release notes",
+  "forbid_text": [],
+  "setup": [
+    {
+      "name": "install this repository",
+      "method": "POST",
+      "path": "/api/apps/install",
+      "body": {
+        "source": "{{app_root}}"
+      }
+    },
+    {
+      "name": "trust it (it runs its own code)",
+      "method": "POST",
+      "path": "/api/security/trusted-apps/mochi"
+    },
+    {
+      "name": "turn it on",
+      "method": "POST",
+      "path": "/api/apps/mochi/enable"
+    },
+    {
+      "name": "the dashboard's privacy notice, as already read",
+      "method": "PUT",
+      "path": "/api/config/theme",
+      "body": {
+        "privacy_acked": true,
+        "privacy_ack_version": 4,
+        "kiro_telemetry_ack_version": 4,
+        "onboarded": true
+      }
+    },
+    {
+      "name": "retire the host's one-time startup intro",
+      "method": "POST",
+      "path": "/api/feature-videos/feedback",
+      "body": {
+        "id": "crewmates",
+        "status": "dismissed"
+      },
+      "optional": true
+    },
+    {
+      "name": "turn off the host's feature tips",
+      "method": "POST",
+      "path": "/api/tips/feedback",
+      "body": {
+        "id": "",
+        "action": "optout"
+      },
+      "optional": true
+    },
+    {
+      "name": "a release page to watch",
+      "method": "POST",
+      "path": "/api/apps/mochi/watchlist/update",
+      "body": {
+        "add": [
+          {
+            "label": "Trail map release notes",
+            "kind": "url",
+            "target": "https://trailhead-outfitters.example/releases",
+            "triggerCondition": "a new version is listed",
+            "checkIntervalMins": 60,
+            "notifyOnChange": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "a feed to watch",
+      "method": "POST",
+      "path": "/api/apps/mochi/watchlist/update",
+      "body": {
+        "add": [
+          {
+            "label": "Ridge weather alerts",
+            "kind": "url",
+            "target": "https://ridge-weather.example/alerts.xml",
+            "checkIntervalMins": 30,
+            "notifyOnChange": true,
+            "priority": "high"
+          }
+        ]
+      }
+    },
+    {
+      "name": "something open-ended",
+      "method": "POST",
+      "path": "/api/apps/mochi/watchlist/update",
+      "body": {
+        "add": [
+          {
+            "label": "Camp stove back in stock",
+            "kind": "custom",
+            "target": "https://trailhead-outfitters.example/stoves/alpine-2",
+            "triggerCondition": "the Add to cart button is enabled",
+            "checkIntervalMins": 120
+          }
+        ]
+      }
+    },
+    {
+      "name": "a few chats, as the panel reports them",
+      "method": "POST",
+      "path": "/api/apps/mochi/stat",
+      "body": {
+        "kind": "message_sent"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/apps/mochi/stat",
+      "body": {
+        "kind": "message_received"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/apps/mochi/stat",
+      "body": {
+        "kind": "message_sent"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/apps/mochi/stat",
+      "body": {
+        "kind": "message_received"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/apps/mochi/stat",
+      "body": {
+        "kind": "screenshot"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/apps/mochi/stat",
+      "body": {
+        "kind": "drag"
+      }
+    },
+    {
+      "name": "a walk across the screen",
+      "method": "POST",
+      "path": "/api/apps/mochi/walk-distance",
+      "body": {
+        "pixels": 4200
+      }
+    },
+    {
+      "name": "a peek",
+      "method": "POST",
+      "path": "/api/apps/mochi/peeking",
+      "body": {
+        "peeking": true
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/apps/mochi/peeking",
+      "body": {
+        "peeking": false
+      }
+    },
+    {
+      "name": "quiet for a focus hour, from the pet's menu",
+      "method": "POST",
+      "path": "/api/apps/mochi/quiet",
+      "body": {
+        "minutes": 60
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "hero",
+      "path": "/apps/mochi",
+      "alt": "The Mochi page in Kiro Crew: the pet's status and mood, the recent activity, the memories card, three things on the watch list and the plan card.",
+      "ready": "text=Trail map release notes"
+    },
+    {
+      "name": "use-case-watch",
+      "path": "/apps/mochi",
+      "themes": [
+        "light"
+      ],
+      "alt": "The watch list on the Mochi page: Trail map release notes, Ridge weather alerts and Camp stove back in stock, each with its category, status and a stop button, above the form for adding one.",
+      "ready": "text=Camp stove back in stock",
+      "clip": "div:has(> :text-is('Watch List'))"
+    },
+    {
+      "name": "use-case-quiet",
+      "path": "/apps/mochi",
+      "themes": [
+        "light"
+      ],
+      "alt": "The Recent Activity card on the Mochi page with the entry notifications quiet for 60 min.",
+      "ready": "text=notifications quiet for 60 min",
+      "clip": "div:has(> :text-is('Recent Activity'))"
+    },
+    {
+      "name": "use-case-memories",
+      "path": "/apps/mochi",
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "alt": "The Memories card on the Mochi page: four messages exchanged with Mochi, the steps it walked, the times it looked at the screen, peeked and was dragged, and its chattiest day.",
+      "ready": "text=Memories",
+      "clip": "div:has(> :text-is('Memories'))"
+    }
+  ],
+  "walkthrough": {
+    "name": "walkthrough",
+    "path": "/apps/mochi",
+    "theme": "light",
+    "alt": "A walkthrough of the Mochi page: typing Ranger station hours and its address into the watch form and pressing Watch adds it to the watch list beside the three items already there.",
+    "steps": [
+      {
+        "wait_for": "text=Trail map release notes"
+      },
+      {
+        "caption": "Mochi: what it watches, plans and remembers, on one page",
+        "position": "bottom"
+      },
+      {
+        "wait_ms": 2200
+      },
+      {
+        "caption": "Add something for Mochi to keep an eye on",
+        "position": "bottom"
+      },
+      {
+        "type": "input[aria-label='Name']",
+        "value": "Ranger station hours",
+        "delay_ms": 55
+      },
+      {
+        "type": "input[aria-label='What to watch']",
+        "value": "https://ridge-park.example/hours",
+        "delay_ms": 40
+      },
+      {
+        "wait_ms": 700
+      },
+      {
+        "click": "role=button[name=/Watch/]"
+      },
+      {
+        "wait_for": "text=Ranger station hours"
+      },
+      {
+        "scroll": "text=Ranger station hours"
+      },
+      {
+        "caption": "It is on the list, and Mochi checks it on its own",
+        "position": "bottom"
+      },
+      {
+        "wait_ms": 2400
+      },
+      {
+        "caption": "",
+        "position": "bottom"
+      }
+    ],
+    "tail_ms": 2000
+  }
+}
