@@ -1,20 +1,22 @@
 """The manifest's MCP launch starts the server from this tree, as the gateway does.
 
 The gateway starts ``python3 backend/mcp_launch.py`` with its own interpreter and
-the launch target resolved to its absolute path inside the installed app. This
-starts the same file with the test interpreter (Kiro Crew is a test dependency),
-speaks MCP over stdio, and checks the server answers from the app's data
-directory: the tool list the built-in served, and a plan written there read back
-through ``get_plan``.
+the launch target resolved to its absolute path inside the installed app, and the
+MCP host may start it without the gateway's environment. These start the same
+file with the test interpreter (Kiro Crew is a test dependency), speak MCP over
+stdio, and check the server answers from the app's data directory: the tool list
+the built-in served, and a plan written there read back through ``get_plan``.
 """
 
 from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
+
 
 APP_ROOT = Path(__file__).resolve().parents[1]
 LAUNCH = APP_ROOT / json.loads((APP_ROOT / "app.json").read_text("utf-8"))["mcpServers"]["mochi"][
@@ -37,18 +39,15 @@ def _frames(*messages: dict) -> str:
     return "".join(json.dumps(m) + "\n" for m in messages)
 
 
-def test_the_launcher_serves_the_built_in_tools_from_the_app_data_dir(tmp_path: Path) -> None:
-    home = tmp_path / "crew"
-    data = home / "apps" / "mochi" / "data"
-    data.mkdir(parents=True)
-    queue = {
-        "tasks": [],
-        "planned_at": "2026-11-18T09:00:00Z",
-        "planned_until": "2026-11-18T21:00:00Z",
-        "summary": "a quiet morning",
-    }
-    (data / "mochi-queue.json").write_text(json.dumps(queue), encoding="utf-8")
-    env = {**os.environ, "KIROCREW_HOME": str(home), "PYTHONIOENCODING": "utf-8"}
+QUEUE = {
+    "tasks": [],
+    "planned_at": "2026-11-18T09:00:00Z",
+    "planned_until": "2026-11-18T21:00:00Z",
+    "summary": "a quiet morning",
+}
+
+
+def _talk(launch: Path, env: dict, cwd: Path) -> tuple[dict, str]:
     stdin = _frames(
         {
             "jsonrpc": "2.0",
@@ -61,14 +60,14 @@ def test_the_launcher_serves_the_built_in_tools_from_the_app_data_dir(tmp_path: 
         {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "get_plan", "arguments": {}}},
     )
     proc = subprocess.run(
-        [sys.executable, str(LAUNCH)],
+        [sys.executable, str(launch)],
         input=stdin,
         capture_output=True,
         text=True,
         encoding="utf-8",
         errors="replace",
-        env=env,
-        cwd=str(tmp_path),
+        env={**env, "PYTHONIOENCODING": "utf-8"},
+        cwd=str(cwd),
         timeout=60,
     )
     replies = {}
@@ -77,7 +76,49 @@ def test_the_launcher_serves_the_built_in_tools_from_the_app_data_dir(tmp_path: 
             message = json.loads(line)
             if "id" in message:
                 replies[message["id"]] = message
-    assert replies[1]["result"]["serverInfo"]["name"] == "mochi", proc.stderr
+    return replies, proc.stderr
+
+
+def _assert_answers_the_plan(replies: dict, stderr: str) -> None:
+    assert replies[1]["result"]["serverInfo"]["name"] == "mochi", stderr
     assert {t["name"] for t in replies[2]["result"]["tools"]} == BUILTIN_TOOLS
     text = replies[3]["result"]["content"][0]["text"]
-    assert json.loads(text)["planned_until"] == queue["planned_until"], text
+    assert json.loads(text)["planned_until"] == QUEUE["planned_until"], text
+
+
+def test_an_installed_copy_runs_in_its_record_s_data_home_without_the_gateway_env(
+    tmp_path: Path,
+) -> None:
+    """An installed record answers from its own ``data/``, with no ``KIROCREW_HOME``.
+
+    The launch an installed app's agents mount carries no env, and an MCP host may
+    start it without the gateway's: the built-in's launch pinned ``KIROCREW_HOME``,
+    so on a non-default data home the tools, their audit and the sensitive-path
+    rules would otherwise all resolve the default home.
+    """
+    record = tmp_path / "custom-home" / "apps" / "mochi"
+    shutil.copytree(
+        APP_ROOT,
+        record,
+        ignore=shutil.ignore_patterns("tests", "ui", "capture", "docs", ".git", "__pycache__"),
+    )
+    (record / "installed.json").write_text(json.dumps({"name": "mochi"}), encoding="utf-8")
+    (record / "data").mkdir()
+    (record / "data" / "mochi-queue.json").write_text(json.dumps(QUEUE), encoding="utf-8")
+    elsewhere = tmp_path / "default-home"
+    env = {k: v for k, v in os.environ.items() if k != "KIROCREW_HOME"}
+    env["HOME"] = env["USERPROFILE"] = str(elsewhere)
+    replies, stderr = _talk(record / "backend" / "mcp_launch.py", env, tmp_path)
+    _assert_answers_the_plan(replies, stderr)
+    assert not (elsewhere / ".kiro").exists()
+    assert (tmp_path / "custom-home" / "security_events.jsonl").is_file()
+
+
+def test_a_checkout_answers_from_the_data_home_it_is_given(tmp_path: Path) -> None:
+    """A tree that is no installed record keeps the data home its environment names."""
+    home = tmp_path / "crew"
+    data = home / "apps" / "mochi" / "data"
+    data.mkdir(parents=True)
+    (data / "mochi-queue.json").write_text(json.dumps(QUEUE), encoding="utf-8")
+    replies, stderr = _talk(LAUNCH, {**os.environ, "KIROCREW_HOME": str(home)}, tmp_path)
+    _assert_answers_the_plan(replies, stderr)
