@@ -1,0 +1,19 @@
+# Test-only dependencies, pinned. Deliberately NOT at the repository root: a root
+# requirements.txt makes a Kiro Crew registry install run pip into the gateway's
+# interpreter (and is refused outright on the desktop build). At runtime the app
+# needs only the stdlib and aiohttp, which the gateway already provides, and the
+# gateway itself.
+#
+# Kiro Crew is a TEST dependency here, pinned to one commit of its public source:
+# Mochi writes through the host's atomic and owner-only file helpers and its
+# cross-process file lock, redacts through its redactor, serves its MCP tools
+# through its stdio loop and re-materializes its agents through its bridge, and
+# the suite exercises those real collaborators the way the built-in's suite did.
+# The app imports none of it by name (tests/test_no_host_imports.py); it reaches
+# the host only through _host.py.
+aiohttp==3.14.3
+pytest==9.0.3
+pytest-asyncio==0.21.2
+pytest-timeout==2.2.0
+flake8==7.5.0
+kirocrew @ https://github.com/kirodotdev/KiroCrew/archive/5ec3b8167727fa2193a2de56c40ee20449469687.tar.gz

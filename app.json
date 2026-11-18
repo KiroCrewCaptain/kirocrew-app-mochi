@@ -1,0 +1,256 @@
+{
+  "name": "mochi",
+  "version": "0.1.0",
+  "displayName": "Mochi",
+  "description": "A desktop companion that lives on your screen. Mochi chats through its own panel, watches pages and feeds for you, plans its own day around your schedule, remembers your time together, and taps you on the shoulder only when something actually changed.",
+  "author": "kirocrew",
+  "license": "Apache-2.0",
+  "tags": [
+    "companion",
+    "desktop-pet",
+    "watchlist",
+    "reminders",
+    "autonomous"
+  ],
+  "highlights": [
+    "A pet window that floats on your desktop — transparent, click-through, always company",
+    "Watch list with reliability guarantees: due-time scheduling, failure backoff, at-least-once notification",
+    "Plans and replans its own task queue; deterministic moves and moods cost zero tokens",
+    "Remembers your relationship — streaks, busiest days, milestones celebrated exactly once",
+    "Quiet by design: notifications merge, silent mode holds them, meetings are respected",
+    "The autonomous core is fully in-process — no second app, no extra runtime"
+  ],
+  "iconPath": "assets/icon.png",
+  "heroImage": "assets/hero.jpg",
+  "screenshots": [
+    "assets/shot-1-gallery.png"
+  ],
+  "defaultEnabled": false,
+  "platform": {
+    "os": [
+      "macos",
+      "linux",
+      "windows"
+    ],
+    "requiresDesktopApp": true
+  },
+  "permissions": {
+    "api": [
+      "/api/apps/mochi",
+      "/api/apps/mochi/*"
+    ],
+    "storage": true,
+    "events": [
+      "mochi:move",
+      "mochi:mood",
+      "mochi:notify",
+      "mochi:chat-push",
+      "mochi:quiet",
+      "mochi:peeking",
+      "mochi:idle",
+      "mochi:force-replan",
+      "mochi:watchlist-changed",
+      "mochi:gallery-packs-changed",
+      "mochi:color-map-changed",
+      "pet:state-change",
+      "pinned:files-changed",
+      "pinned:file-updated",
+      "pinned:file-deleted"
+    ],
+    "cron": true,
+    "spawn": true,
+    "desktopCapabilities": [
+      "screenCapture",
+      "localFiles",
+      "gatewayChoice"
+    ]
+  },
+  "ui": {
+    "entry": "dist/index.mjs",
+    "pages": [
+      {
+        "route": "/apps/mochi",
+        "label": "Mochi"
+      }
+    ]
+  },
+  "backend": {
+    "hooks": {
+      "routes": "backend.routes:register_routes",
+      "on_startup": "backend.lifecycle:on_startup",
+      "on_shutdown": "backend.lifecycle:on_shutdown"
+    }
+  },
+  "agents": [
+    "agents/mochi.json",
+    "agents/mochi-bg.json"
+  ],
+  "skills": [
+    "agents/skills/mochi-plan",
+    "agents/skills/mochi-replan",
+    "agents/skills/mochi-watch",
+    "agents/skills/mochi-remind",
+    "agents/skills/mochi-slack",
+    "agents/skills/mochi-tips"
+  ],
+  "mcpServers": {
+    "mochi": {
+      "command": "python3",
+      "args": [
+        "backend/mcp_launch.py"
+      ],
+      "disabled": false
+    }
+  },
+  "useCases": [
+    "Keep a quiet desktop pet that chats, tracks reminders and public-page changes, and adapts around connected calendar events."
+  ],
+  "configuration": [
+    "Use Kiro Crew Desktop, enable Mochi, choose its appearance and behavior, then add watch targets in chat or on the dashboard; schedule-aware planning requires a connected calendar MCP tool."
+  ],
+  "l10n": {
+    "bn": {
+      "displayName": "Mochi",
+      "description": "তোমার স্ক্রিনেই থাকে এমন একটি ডেস্কটপ সঙ্গী। Mochi নিজের প্যানেলে কথা বলে, তোমার হয়ে পেজ ও ফিডে নজর রাখে, তোমার সূচি অনুযায়ী নিজের দিনটা সাজায়, একসঙ্গে কাটানো সময় মনে রাখে, আর সত্যিই কিছু বদলালেই কেবল কাঁধে টোকা দেয়।",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "তোমার ডেস্কটপে ভেসে থাকা একটি পোষ্য উইন্ডো — স্বচ্ছ, ক্লিক পার হয়ে যায়, সবসময় সঙ্গে থাকে",
+        "নির্ভরযোগ্যতার নিশ্চয়তা সহ নজর তালিকা: সময়মতো শিডিউল, ব্যর্থতায় ব্যাকঅফ, অন্তত-একবার নোটিফিকেশন",
+        "নিজের টাস্ক কিউ সাজায় ও দরকারে আবার সাজায়; নির্ধারিত চলাফেরা ও মুড কোনো টোকেন খরচ করে না",
+        "তোমার সঙ্গে সম্পর্কটা মনে রাখে — টানা দিন, সবচেয়ে ব্যস্ত দিন, আর ঠিক একবারই উদযাপন করা মাইলফলক",
+        "ইচ্ছে করেই শান্ত: নোটিফিকেশন একসঙ্গে মিশে যায়, নীরব মোড সেগুলো ধরে রাখে, মিটিংয়ের সময় বিরক্ত করে না",
+        "স্বয়ংক্রিয় কোরটি পুরোপুরি একই প্রসেসের ভেতরে — দ্বিতীয় কোনো অ্যাপ নেই, বাড়তি কোনো রানটাইমও নেই"
+      ]
+    },
+    "de": {
+      "displayName": "Mochi",
+      "description": "Ein Desktop-Begleiter, der auf deinem Bildschirm wohnt. Mochi chattet über sein eigenes Panel, beobachtet Seiten und Feeds für dich, plant seinen Tag um deinen Zeitplan herum, erinnert sich an eure gemeinsame Zeit und tippt dir nur dann auf die Schulter, wenn sich wirklich etwas geändert hat.",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "Ein Haustierfenster, das auf deinem Desktop schwebt — transparent, klickdurchlässig, immer Gesellschaft",
+        "Beobachtungsliste mit Zuverlässigkeitsgarantien: Planung nach Fälligkeit, Backoff bei Fehlern, Benachrichtigung mindestens einmal",
+        "Erstellt und überarbeitet seine eigene Aufgabenwarteschlange; deterministische Bewegungen und Stimmungen kosten keine Tokens",
+        "Erinnert sich an eure Beziehung — Serien, geschäftigste Tage, Meilensteine genau einmal gefeiert",
+        "Bewusst leise: Benachrichtigungen werden zusammengefasst, der stumme Modus hält sie zurück, Besprechungen werden respektiert",
+        "Der autonome Kern läuft vollständig im Prozess — keine zweite App, keine zusätzliche Laufzeitumgebung"
+      ]
+    },
+    "es": {
+      "displayName": "Mochi",
+      "description": "Un acompañante de escritorio que vive en tu pantalla. Mochi conversa en su propio panel, vigila páginas y feeds por ti, planea su día en torno a tu agenda, recuerda el tiempo que pasan juntos y te da un toque en el hombro solo cuando algo cambió de verdad.",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "Una ventana de mascota que flota en tu escritorio — transparente, con clics que la atraviesan, siempre acompañando",
+        "Lista de seguimiento con garantías de fiabilidad: programación por hora de vencimiento, espera progresiva ante fallos y notificación al menos una vez",
+        "Planea y replanea su propia cola de tareas; los movimientos y los estados de ánimo deterministas no cuestan tokens",
+        "Recuerda su relación contigo — rachas, días más ocupados e hitos celebrados exactamente una vez",
+        "Silencioso por diseño: las notificaciones se agrupan, el modo silencio las retiene y se respetan las reuniones",
+        "El núcleo autónomo corre por completo en el mismo proceso — sin una segunda aplicación y sin un entorno de ejecución extra"
+      ]
+    },
+    "fr": {
+      "displayName": "Mochi",
+      "description": "Un compagnon de bureau qui vit sur ton écran. Mochi discute depuis son propre panneau, surveille des pages et des flux pour toi, organise sa journée autour de ton emploi du temps, se souvient des moments passés ensemble et ne te tape sur l’épaule que lorsque quelque chose a vraiment changé.",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "Une fenêtre-animal qui flotte sur ton bureau — transparente, traversable au clic, toujours là",
+        "Liste de surveillance avec garanties de fiabilité : planification à échéance, temporisation après échec, notification au moins une fois",
+        "Planifie et replanifie sa propre file de tâches ; les déplacements et humeurs déterministes ne coûtent aucun jeton",
+        "Se souvient de votre histoire commune — séries, journées les plus chargées, jalons fêtés une seule fois",
+        "Discret par conception : les notifications fusionnent, le mode silencieux les retient, les réunions sont respectées",
+        "Le cœur autonome est entièrement dans le même processus — aucune seconde application, aucun runtime supplémentaire"
+      ]
+    },
+    "hi": {
+      "displayName": "Mochi",
+      "description": "एक डेस्कटॉप साथी जो तुम्हारी स्क्रीन पर रहता है। Mochi अपने पैनल में बात करता है, तुम्हारे लिए पेज और फ़ीड पर नज़र रखता है, तुम्हारे शेड्यूल के हिसाब से अपना दिन तय करता है, साथ बिताया वक़्त याद रखता है, और कंधे पर हाथ सिर्फ़ तब रखता है जब असल में कुछ बदला हो।",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "एक पालतू विंडो जो तुम्हारे डेस्कटॉप पर तैरती है — पारदर्शी, क्लिक-थ्रू, हमेशा साथ",
+        "भरोसे की गारंटी वाली वॉच लिस्ट: नियत समय पर शेड्यूलिंग, फ़ेल होने पर बैकऑफ़, कम-से-कम-एक-बार सूचना",
+        "अपनी टास्क कतार खुद बनाता और दोबारा बनाता है; तय चालें और मूड शून्य टोकन खर्च करते हैं",
+        "तुम्हारे रिश्ते को याद रखता है — लगातार दिन, सबसे व्यस्त दिन, और हर पड़ाव ठीक एक बार मनाया जाता है",
+        "डिज़ाइन से ही शांत: सूचनाएँ एक में मिल जाती हैं, साइलेंट मोड उन्हें रोक लेता है, और मीटिंग का ध्यान रखा जाता है",
+        "स्वायत्त कोर पूरी तरह उसी प्रोसेस में है — कोई दूसरी ऐप नहीं, कोई अलग रनटाइम नहीं"
+      ]
+    },
+    "it": {
+      "displayName": "Mochi",
+      "description": "Un compagno da scrivania che vive sul tuo schermo. Mochi chiacchiera dal suo pannello, tiene d’occhio pagine e feed per te, organizza la propria giornata intorno ai tuoi impegni, ricorda il tempo passato insieme e ti dà un colpetto sulla spalla solo quando qualcosa è davvero cambiato.",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "Una finestra-mascotte che galleggia sulla scrivania — trasparente, attraversabile dai clic, sempre in compagnia",
+        "Elenco di osservazione con garanzie di affidabilità: pianificazione a scadenza, attesa progressiva in caso di errore, notifica almeno una volta",
+        "Pianifica e ripianifica la propria coda di attività; movimenti e umori deterministici hanno costo zero",
+        "Ricorda il vostro rapporto — serie di giorni consecutivi, giorni più intensi, traguardi festeggiati una volta sola",
+        "Discreto per scelta: le notifiche si uniscono, la modalità silenziosa le trattiene, le riunioni vengono rispettate",
+        "Il nucleo autonomo è interamente nello stesso processo — nessuna seconda app, nessun runtime aggiuntivo"
+      ]
+    },
+    "ja": {
+      "displayName": "Mochi",
+      "description": "あなたの画面に住んでいるデスクトップコンパニオン。Mochi は独自のパネルでチャットし、ページとフィードを監視し、あなたのスケジュールの周りで独自の日を計画し、一緒に過ごした時間を覚えており、実際に変わったときだけあなたに肩をたたきます。",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "デスクトップに浮かぶペットウィンドウ — 透明、クリックスルー、常に相手がいます",
+        "信頼性保証付きウォッチリスト: 期限スケジューリング、障害バックオフ、少なくとも1回の通知",
+        "独自のタスクキューを計画・再計画; 決定論的な動きと気分はゼロトークンの費用です",
+        "あなたとの関係を覚えています — ストリーク、最も忙しい日、マイルストーンは正確に1回祝われます",
+        "デザインが静か: 通知が統合され、サイレントモードはそれらを保持し、ミーティングは尊重されます",
+        "自律コアは完全にインプロセス — 追加アプリなし、追加ランタイムなし"
+      ]
+    },
+    "ko": {
+      "displayName": "Mochi",
+      "description": "화면에서 함께 지내는 데스크톱 친구입니다. Mochi는 자체 패널로 대화하고, 페이지와 피드를 대신 지켜보고, 일정에 맞춰 하루를 계획하고, 함께한 시간을 기억하며, 실제로 무언가 바뀌었을 때만 알려 줍니다.",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "데스크톱에 떠 있는 펫 창 — 투명하고 클릭이 통과하며 언제나 곁에 있습니다",
+        "신뢰성을 보장하는 감시 목록: 예정 시각 스케줄링, 실패 백오프, 최소 1회 알림",
+        "자체 작업 큐를 계획하고 다시 계획합니다. 정해진 움직임과 기분은 토큰을 쓰지 않습니다",
+        "관계를 기억합니다 — 연속 기록, 가장 바빴던 날, 기념할 순간은 정확히 한 번만 축하합니다",
+        "조용하도록 설계했습니다: 알림은 병합되고, 무음 모드는 알림을 붙잡아 두며, 회의 시간은 지켜 줍니다",
+        "자율 코어가 프로세스 안에서 모두 동작합니다 — 별도 앱도, 추가 런타임도 없습니다"
+      ]
+    },
+    "pt": {
+      "displayName": "Mochi",
+      "description": "Um companheiro de desktop que vive na sua tela. O Mochi conversa pelo painel dele, acompanha páginas e feeds para você, planeja o próprio dia em torno da sua agenda, lembra o tempo que vocês passaram juntos e só toca no seu ombro quando algo realmente mudou.",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "Uma janela de bichinho que flutua na sua área de trabalho — transparente, deixa passar os cliques, sempre por perto",
+        "Lista de observação com garantias de confiabilidade: agendamento por horário, recuo em caso de falha, notificação pelo menos uma vez",
+        "Planeja e replaneja a própria fila de tarefas; movimentos e humores determinísticos custam zero tokens",
+        "Lembra a relação de vocês — sequências, dias mais movimentados, marcos celebrados exatamente uma vez",
+        "Discreto por princípio: as notificações se agrupam, o modo silencioso as retém e as reuniões são respeitadas",
+        "O núcleo autônomo roda inteiramente no processo — sem um segundo aplicativo, sem runtime extra"
+      ]
+    },
+    "ru": {
+      "displayName": "Mochi",
+      "description": "Настольный компаньон, который живёт прямо на экране. Mochi общается в своей панели, следит за страницами и лентами, планирует свой день вокруг твоего расписания, помнит время, проведённое вместе, и трогает за плечо только тогда, когда что-то действительно изменилось.",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "Окно-питомец поверх рабочего стола — прозрачное, не перехватывает клики, всегда рядом",
+        "Список наблюдения с гарантиями надёжности: запуск к нужному времени, отсрочка при сбоях, уведомление хотя бы один раз",
+        "Планирует и перепланирует свою очередь задач; детерминированные перемещения и настроения не расходуют кредиты",
+        "Помнит историю общения — серии дней, самые загруженные дни, вехи, которые отмечаются ровно один раз",
+        "Не шумит по замыслу: уведомления объединяются, тихий режим их придерживает, встречи не тревожит",
+        "Автономное ядро полностью внутри процесса — без второго приложения и без дополнительной среды выполнения"
+      ]
+    },
+    "zh-CN": {
+      "displayName": "Mochi",
+      "description": "一个住在你屏幕上的桌面伙伴。Mochi 在自己的面板里聊天，替你盯着网页和信息源，按你的日程规划一天。它记得你们相处的点滴，只在确实有变化时才拍你肩膀。",
+      "pageLabel": "Mochi",
+      "highlights": [
+        "浮在桌面上的宠物窗口 — 透明、可穿透点击、始终陪着你",
+        "监视列表带可靠性保证：到点调度、失败退避、至少一次通知",
+        "自行规划和重排任务队列；确定性的动作和情绪不消耗任何令牌",
+        "记得你们的关系 — 连续天数、最忙的日子、里程碑只庆祝一次",
+        "天生安静：通知会合并，静音模式会先扣住，开会时不打扰",
+        "自主内核完全在进程内 — 没有第二个应用，也没有额外运行时"
+      ]
+    }
+  }
+}
