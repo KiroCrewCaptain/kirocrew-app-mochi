@@ -36,9 +36,10 @@ Kiro Crew change (a generic, app-agnostic App Kit seam), not a change here.
   `highlights`, `useCases`, `configuration`). `tests/test_manifest_contract.py`
   compares them with the built-in's manifest (`tests/fixtures/builtin-app.json`),
   because adoption refuses a manifest that widens a grant or forces the app off.
-  No grant is added. The `version` was the built-in's `0.1.0` at the port; a
-  Kiro Crew release that pins this repository moves the wheel copy's version to
-  the released one, as adoption requires.
+  No grant is added. The `version` was the built-in's `0.1.0` at the port; this
+  repository released `0.1.1` once its MCP launch named the record's data home
+  (#2), and a Kiro Crew release that pins it moves the wheel copy's version to
+  the same `0.1.1`, as adoption requires.
 - The owner loop and every module it drives, file for file at the same paths
   (`hooks.py`, the behaviour queue and its poller, the watch list, pinned files,
   stats, idle and presence, the notification gate, the pet state machine, the
