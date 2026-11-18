@@ -1,0 +1,95 @@
+{
+  "app": "mochi",
+  "captured_at": "2026-11-18T07:46:08Z",
+  "app_commit": "ddaf768e12912a5e2d985d76c629cfeca5d9c80e",
+  "kirocrew_commit": "5ec3b8167727fa2193a2de56c40ee20449469687",
+  "kirocrew_tree_dirty": true,
+  "gateway": "isolated temporary home, approval=reads; a freshly seeded gateway for the stub screenshots, one for the live ones and one for the walkthrough",
+  "data": "fictional, seeded through the app's HTTP API (capture/scenes.json)",
+  "agent_backend": {
+    "live": [],
+    "live_model": null,
+    "stub": "Kiro Crew's offline stub ACP backend (capture/stub_backend.py) for every other scene; no chat reply is shown from it",
+    "credit_reading": "the browser answers the top bar's credit readout (/api/sessions/usage) with \"no reading\", so no account balance or email can be shown"
+  },
+  "note": "This repository installed from its own folder into the throwaway home of a Kiro Crew checkout whose built-in Mochi was removed, as a release that no longer ships it would be. The pictures show the app's dashboard page; the desktop pet and its windows are drawn by the Kiro Crew desktop app, which was not running.",
+  "data_notes": [
+    "The watch items, the counters behind the memories and the quiet hour were added through the app's own API; Mochi's background agent did not run, so no plan was written."
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "device_scale": 2,
+  "screenshots": [
+    {
+      "file": "hero-dark.png",
+      "name": "hero",
+      "theme": "dark",
+      "bytes": 233592,
+      "width": 1600,
+      "height": 1000,
+      "alt": "The Mochi page in Kiro Crew: the pet's status and mood, the recent activity, the memories card, three things on the watch list and the plan card."
+    },
+    {
+      "file": "hero-light.png",
+      "name": "hero",
+      "theme": "light",
+      "bytes": 217165,
+      "width": 1600,
+      "height": 1000,
+      "alt": "The Mochi page in Kiro Crew: the pet's status and mood, the recent activity, the memories card, three things on the watch list and the plan card."
+    },
+    {
+      "file": "use-case-memories-dark.png",
+      "name": "use-case-memories",
+      "theme": "dark",
+      "bytes": 185112,
+      "width": 1600,
+      "height": 1016,
+      "alt": "The Memories card on the Mochi page: four messages exchanged with Mochi, the steps it walked, the times it looked at the screen, peeked and was dragged, and its chattiest day."
+    },
+    {
+      "file": "use-case-memories-light.png",
+      "name": "use-case-memories",
+      "theme": "light",
+      "bytes": 166535,
+      "width": 1600,
+      "height": 1016,
+      "alt": "The Memories card on the Mochi page: four messages exchanged with Mochi, the steps it walked, the times it looked at the screen, peeked and was dragged, and its chattiest day."
+    },
+    {
+      "file": "use-case-quiet-light.png",
+      "name": "use-case-quiet",
+      "theme": "light",
+      "bytes": 53834,
+      "width": 1600,
+      "height": 1016,
+      "alt": "The Recent Activity card on the Mochi page with the entry notifications quiet for 60 min."
+    },
+    {
+      "file": "use-case-watch-light.png",
+      "name": "use-case-watch",
+      "theme": "light",
+      "bytes": 186277,
+      "width": 1600,
+      "height": 822,
+      "alt": "The watch list on the Mochi page: Trail map release notes, Ridge weather alerts and Camp stove back in stock, each with its category, status and a stop button, above the form for adding one."
+    }
+  ],
+  "walkthrough": {
+    "shortened_waits_s": [],
+    "mp4": {
+      "file": "walkthrough.mp4",
+      "bytes": 167948
+    },
+    "gif": {
+      "file": "walkthrough.gif",
+      "bytes": 964011,
+      "width": 960,
+      "fps": 10
+    },
+    "theme": "light",
+    "alt": "A walkthrough of the Mochi page: typing Ranger station hours and its address into the watch form and pressing Watch adds it to the watch list beside the three items already there."
+  }
+}
